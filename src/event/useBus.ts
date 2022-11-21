@@ -1,4 +1,4 @@
-import { useGlobal } from "../state/useGlobal"
+import { useGlobal } from '../state/useGlobal'
 
 export interface BusEvent<P> {
   eventId?: number
@@ -14,9 +14,7 @@ export interface Subscriber<T, E> {
 }
 export type SubscriptionType = 'one-time' | 'continuous'
 
-export type Action<Payload, ResponsePayload> = (
-  payload: Payload,
-) => Promise<ResponsePayload>
+export type Action<Payload, ResponsePayload> = (payload: Payload) => Promise<ResponsePayload>
 
 export interface Bus<T, P> {
   subscribers: Array<Subscriber<T, P> | undefined>
@@ -29,7 +27,7 @@ const defaultBusName = '@@useBus'
 
 export const useBus = <T, P>(name = defaultBusName): Bus<T, P> => {
   const [bus, setBus] = useGlobal<Bus<T, P>>(name)
-  
+
   const _bus = bus()
   if (_bus) return _bus // singleton early return
 
@@ -62,80 +60,90 @@ export const useBus = <T, P>(name = defaultBusName): Bus<T, P> => {
 export const getResponseEventName = <BusEventNames>(eventName: BusEventNames): BusEventNames =>
   `${eventName}:response` as unknown as BusEventNames
 
-export const useBusSubscribe = <BusEventNames, Payload>
-    (
-        eventName: BusEventNames, 
-        eventHandler: EventHandler<BusEventNames, Payload>,
-        subscriptionType: SubscriptionType = 'continuous',
-        waitForEventId?: number,
-    ): SubscriberId => {
+export interface Subscription {
+  unsubscribe: () => void
+}
+
+export const useBusSubscribe = <Payload = unknown, BusEventNames = string>(
+  eventName: BusEventNames,
+  eventHandler: EventHandler<BusEventNames, Payload>,
+  /* istanbul ignore next */
+  subscriptionType: SubscriptionType = 'continuous',
+  waitForEventId?: number,
+): Subscription => {
+  const bus = useBus<BusEventNames, Payload>()
+
+  const subscriberId = bus.on(eventName, (handlerPayload, bus) => {
+    if (subscriptionType === 'one-time') {
+      if (typeof waitForEventId !== 'undefined' && handlerPayload.eventId === waitForEventId) {
+        bus.off(subscriberId)
+      } else {
+        bus.off(subscriberId)
+      }
+    }
+    return eventHandler(handlerPayload, bus)
+  })
+
+  return {
+    unsubscribe: () => {
+      bus.off(subscriberId)
+    },
+  }
+}
+
+export const useBusOn = <Payload = unknown, ResponsePayload = unknown, BusEventNames = string>(
+  eventName: BusEventNames,
+  action: Action<Payload, ResponsePayload>,
+): Subscription => {
+  const bus = useBus<BusEventNames, ResponsePayload>()
+
+  // whenever an event $eventName is emitted on the bus,
+  // we want to activate the handler registered here
+  return useBusSubscribe<Payload, BusEventNames>(
+    eventName,
+    async (event: BusEvent<Payload>) => {
+      // we respond with an event that announces a response to the
+      // event we just catched
+      bus.emit(getResponseEventName<BusEventNames>(eventName), {
+        // therefore the action needs to be called and awaited
+        payload: await action(event.payload),
+        // make sure the event is the same as the one we've received
+        // so that the receiver can map the response well
+        eventId: event.eventId,
+      })
+    },
+    'continuous',
+  )
+}
+
+export const useBusEmit = async <Payload = unknown, ResponsePayload = unknown, BusEventNames = string>(
+  eventName: BusEventNames,
+  payload: Payload,
+): Promise<ResponsePayload> => {
+  return new Promise((resolve) => {
+    const [eventId, setEventId] = useGlobal<number>('@@useBusCallActionEventId', 1)
+
+    setEventId(eventId() + 1)
 
     const bus = useBus<BusEventNames, Payload>()
-    const awaitsSpecificEvent = typeof waitForEventId !== 'undefined'
-    const responseEventName = awaitsSpecificEvent ? getResponseEventName(eventName) : eventName
 
-    const subscriberId = bus.on(responseEventName, (handlerPayload, bus) => {
-        if (subscriptionType === 'one-time') {
-            if (awaitsSpecificEvent) {
-                if (handlerPayload.eventId === waitForEventId) {
-                bus.off(subscriberId)
-                }
-            } else {
-                bus.off(subscriberId)
-            }
-        }
-        return eventHandler(handlerPayload, bus)
+    // start listening for the response to the action event we will emit
+    useBusSubscribe(
+      getResponseEventName(eventName),
+      (event: BusEvent<ResponsePayload>) => {
+        // now we've got the response from the event action being
+        // processed, so we can resolve the promise
+        resolve(event.payload)
+      },
+      'one-time',
+      eventId(),
+    )
+
+    // emit the event so that an action
+    // registered via useBusAddAction is called
+    bus.emit(eventName, {
+      payload,
+      eventId: eventId(),
     })
-    return subscriberId
-}
-
-export const useBusOn = <BusEventNames = string, Payload = unknown, ResponsePayload = unknown>(
-    eventName: BusEventNames,
-    action: Action<Payload, ResponsePayload>
-): SubscriberId => {
-    const bus = useBus<BusEventNames, ResponsePayload>()
-
-    // whenever an event $eventName is emitted on the bus,
-    // we want to activate the handler registered here
-    return useBusSubscribe<BusEventNames, Payload>(eventName, async(
-        event: BusEvent<Payload>
-    ) => {
-        // we respond with an event that announces a response to the 
-        // event we just catched
-        bus.emit(getResponseEventName<BusEventNames>(eventName), {
-            // therefore the action needs to be called and awaited
-            payload: (await action(event.payload)),
-            // make sure the event is the same as the one we've received
-            // so that the receiver can map the response well
-            eventId: event.eventId
-        })
-    }, 'continuous')
-}
-
-export const useBusEmit = async <BusEventNames, Payload, ResponsePayload>(
-    eventName: BusEventNames, payload: Payload
-): Promise<ResponsePayload> => {
-
-    return new Promise((resolve) => {
-
-        const [eventId, setEventId] = useGlobal<number>('@@useBusCallActionEventId', 1)
-
-        setEventId(eventId() + 1)
-
-        const bus = useBus<BusEventNames, Payload>()
-
-        // start listening for the response to the action event we will emit 
-        useBusSubscribe(eventName, (event: BusEvent<ResponsePayload>) => {
-            // now we've got the response from the event action being 
-            // processed, so we can resolve the promise
-            resolve(event.payload)
-        }, 'one-time', eventId())
-
-        // emit the event so that an action 
-        // registered via useBusAddAction is called
-        bus.emit(eventName, {
-            payload,
-            eventId: eventId()
-        })
-    })
+  })
 }

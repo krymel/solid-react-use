@@ -1,29 +1,22 @@
 {
   "compilerOptions": {
-    "allowSyntheticDefaultImports": true,
-    "esModuleInterop": true,
+    "outDir": "dist",
     "target": "ESNext",
     "module": "ESNext",
-    "moduleResolution": "node",
+    "moduleResolution": "Node",
     "jsxImportSource": "solid-js",
     "jsx": "preserve",
+    "declaration": true,
     "types": [
       "node",
       "jest"
-    ],
-    "baseUrl": "./",
-    "paths": {
-      "~/*": [
-        "./src/*"
-      ]
-    }
+    ]
   },
   "exclude": [
     "node_modules",
     "**/node_modules/*"
   ],
   "include": [
-    "src",
-    "jest.config.js"
+    "src"
   ]
 }

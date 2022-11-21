@@ -8,5 +8,5 @@
  * @version 16.8.0
  * @see https://reactjs.org/docs/hooks-reference.html#usedebugvalue
  */
-export const useDebugValue = <T>(value: T, format?: (value: T) => unknown) => 
-    console.debug(format ? format(value): value)
+export const useDebugValue = <T>(value: T, format?: (value: T) => unknown) =>
+  console.debug(format ? format(value) : value)
