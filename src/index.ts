@@ -1,8 +1,8 @@
 export * from './solid-use/useAtom'
 
-export * from './platform/useCSROnly'
+export * from './platform/useClientOnly'
 export * from './platform/usePlatform'
-export * from './platform/useSSROnly'
+export * from './platform/useServerOnly'
 
 export * from './react/useDebugValue'
 export * from './react/useMemo'

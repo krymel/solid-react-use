@@ -67,7 +67,6 @@ export interface Subscription {
 export const useBusSubscribe = <Payload = unknown, BusEventNames = string>(
   eventName: BusEventNames,
   eventHandler: EventHandler<BusEventNames, Payload>,
-  /* istanbul ignore next */
   subscriptionType: SubscriptionType = 'continuous',
   waitForEventId?: number,
 ): Subscription => {

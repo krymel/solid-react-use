@@ -1,4 +1,5 @@
-import { BusEvent, useBus, useBusEmit, useBusOn, useBusSubscribe } from '../useBus'
+import { vi } from 'vitest'
+import { BusEvent, getResponseEventName, useBus, useBusEmit, useBusOn, useBusSubscribe } from './useBus'
 
 describe('useBus', () => {
   const bus = useBus()
@@ -12,7 +13,7 @@ describe('useBus', () => {
   })
 
   it('can emit on a topic and get called', () => {
-    const onEventReceived = jest.fn(() => {})
+    const onEventReceived = vi.fn(() => {})
 
     const bus = useBus<'chat:message', { arbitrary: string }>()
 
@@ -34,7 +35,7 @@ describe('useBus', () => {
   })
 
   it('can emit on a topic and unregister as well', () => {
-    const onEventReceived = jest.fn(() => {})
+    const onEventReceived = vi.fn(() => {})
 
     const subscriberId = bus.on('chat:message', onEventReceived)
     bus.off(subscriberId)
@@ -62,8 +63,12 @@ describe('useBus', () => {
 
   type ReturnValue = boolean
 
+  it('generates a correct return channel event name', () => {
+    expect(getResponseEventName('foo')).toEqual('foo:response')
+  })
+
   it('can add a an action handler and emit an event to run it, process the result', async () => {
-    const counterChangedHandler = jest.fn(async (payload: MyCounter) => {
+    const counterChangedHandler = vi.fn(async (payload: MyCounter) => {
       expect(payload.counter).toBe(1)
       return true
     })
@@ -83,7 +88,7 @@ describe('useBus', () => {
   })
 
   it('can add a continuous mode subscriber to process events', async () => {
-    const counterChangedHandler = jest.fn(async (event: BusEvent<MyCounter>) => {
+    const counterChangedHandler = vi.fn(async (event: BusEvent<MyCounter>) => {
       expect(event.payload.counter).toEqual(1)
       return true
     })
@@ -101,7 +106,7 @@ describe('useBus', () => {
   })
 
   it('can add a one-time mode subscriber to process events', async () => {
-    const counterChangedHandler = jest.fn(async (event: BusEvent<MyCounter>) => {
+    const counterChangedHandler = vi.fn(async (event: BusEvent<MyCounter>) => {
       expect(event.payload.counter).toEqual(1)
     })
 
@@ -118,7 +123,7 @@ describe('useBus', () => {
   })
 
   it('can add a one- mode subscriber to process events', async () => {
-    const counterChangedHandler = jest.fn(async (event: BusEvent<MyCounter>) => {
+    const counterChangedHandler = vi.fn(async (event: BusEvent<MyCounter>) => {
       expect(event.payload.counter).toEqual(1)
     })
 

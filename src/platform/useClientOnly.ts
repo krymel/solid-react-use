@@ -6,15 +6,15 @@ import type { PlatformRuntime } from './usePlatform'
  * Use a function only on client-side but *never* on server-side (SSR).
  *
  * ```ts
- * import { useCSROnly } from "solid-react-use"
+ * import { useClientOnly } from "solid-react-use"
  *
  * // only runs on server
- * useCSROnly(() => {
+ * useClientOnly(() => {
  *   console.log('only on client aka. Browser or Worker')
  * });
  * ```
  */
-export const useCSROnly = <T>(callback: () => T, platform: PlatformRuntime = usePlatform()): T | void => {
+export const useClientOnly = <T>(callback: () => T, platform: PlatformRuntime = usePlatform()): T | void => {
   if (platform.isBrowser || platform.isWebWorker) {
     return callback()
   }

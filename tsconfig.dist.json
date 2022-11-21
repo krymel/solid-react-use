@@ -10,7 +10,8 @@
     "declaration": true,
     "types": [
       "node",
-      "jest"
+      "vitest",
+      "@testing-library/jest-dom"
     ]
   },
   "exclude": [

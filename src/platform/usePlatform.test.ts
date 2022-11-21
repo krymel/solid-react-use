@@ -1,4 +1,4 @@
-import { usePlatform } from '../usePlatform'
+import { usePlatform } from './usePlatform'
 
 describe('usePlatform', () => {
   const { isBrowser, isDeno, isJsDom, isNode, isWebWorker } = usePlatform()

@@ -1,9 +1,10 @@
-import { useCSROnly } from '../useCSROnly'
+import { vi } from 'vitest'
+import { useClientOnly } from './useClientOnly'
 
-describe('useCSROnly', () => {
+describe('useClientOnly', () => {
   it('only executed function when in browser environment', () => {
-    const cb = jest.fn()
-    useCSROnly(cb, {
+    const cb = vi.fn()
+    useClientOnly(cb, {
       isBrowser: true,
       isDeno: false,
       isJsDom: false,
@@ -13,8 +14,8 @@ describe('useCSROnly', () => {
   })
 
   it('only executed function when in worker environment', () => {
-    const cb = jest.fn()
-    useCSROnly(cb, {
+    const cb = vi.fn()
+    useClientOnly(cb, {
       isBrowser: false,
       isDeno: false,
       isJsDom: false,
@@ -26,8 +27,8 @@ describe('useCSROnly', () => {
   })
 
   it('only executed function when not in browser or worker environment', () => {
-    const cb = jest.fn()
-    useCSROnly(cb, {
+    const cb = vi.fn()
+    useClientOnly(cb, {
       isBrowser: false,
       isDeno: false,
       isJsDom: false,
@@ -38,10 +39,10 @@ describe('useCSROnly', () => {
     expect(cb).toHaveBeenCalledTimes(0)
   })
 
-  it('does not execute in node testing environment', () => {
-    const cb = jest.fn()
-    useCSROnly(cb)
+  it('does execute in testing environment (jsdom)', () => {
+    const cb = vi.fn()
+    useClientOnly(cb)
 
-    expect(cb).toHaveBeenCalledTimes(0)
+    expect(cb).toHaveBeenCalledTimes(1)
   })
 })

@@ -1,9 +1,10 @@
-import { useSSROnly } from '../useSSROnly'
+import { vi } from 'vitest'
+import { useServerOnly } from './useServerOnly'
 
-describe('useSSROnly', () => {
+describe('useServerOnly', () => {
   it('only executed function when in server environment (Node)', () => {
-    const cb = jest.fn()
-    useSSROnly(cb, {
+    const cb = vi.fn()
+    useServerOnly(cb, {
       isBrowser: false,
       isDeno: true,
       isJsDom: false,
@@ -13,8 +14,8 @@ describe('useSSROnly', () => {
   })
 
   it('only executed function when in worker environment (Deno)', () => {
-    const cb = jest.fn()
-    useSSROnly(cb, {
+    const cb = vi.fn()
+    useServerOnly(cb, {
       isBrowser: false,
       isDeno: true,
       isJsDom: false,
@@ -26,8 +27,8 @@ describe('useSSROnly', () => {
   })
 
   it('only executed function when in worker environment (JsDom)', () => {
-    const cb = jest.fn()
-    useSSROnly(cb, {
+    const cb = vi.fn()
+    useServerOnly(cb, {
       isBrowser: false,
       isDeno: false,
       isJsDom: true,
@@ -39,8 +40,8 @@ describe('useSSROnly', () => {
   })
 
   it('only executed function when not in browser or worker environment', () => {
-    const cb = jest.fn()
-    useSSROnly(cb, {
+    const cb = vi.fn()
+    useServerOnly(cb, {
       isBrowser: false,
       isDeno: false,
       isJsDom: false,
@@ -52,8 +53,8 @@ describe('useSSROnly', () => {
   })
 
   it('does execute in node testing environment', () => {
-    const cb = jest.fn()
-    useSSROnly(cb)
+    const cb = vi.fn()
+    useServerOnly(cb)
 
     expect(cb).toHaveBeenCalledTimes(1)
   })

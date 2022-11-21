@@ -1,19 +1,18 @@
 import { PlatformRuntime, usePlatform } from './usePlatform'
 
-// TODO: rename: useServerOnly
 /**
  * A function that only runs on the server-side / SSR (Node.js, Deno, JsDom).
  *
  * ```ts
- * import { useSSROnly } from "solid-react-use"
+ * import { useServerOnly } from "solid-react-use"
  *
  * // only runs on server
- * useSSROnly(() => {
+ * useServerOnly(() => {
  *   console.log('only on server')
  * });
  * ```
  */
-export const useSSROnly = <T>(callback: () => T, platform: PlatformRuntime = usePlatform()): T | void => {
+export const useServerOnly = <T>(callback: () => T, platform: PlatformRuntime = usePlatform()): T | void => {
   if (platform.isDeno || platform.isNode || platform.isJsDom) {
     return callback()
   }

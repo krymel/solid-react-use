@@ -3,22 +3,20 @@
  * npm: https://www.npmjs.com/package/browser-or-node
  * github: https://github.com/flexdinesh/browser-or-node
  */
-/* istanbul ignore next */
 const isBrowser = typeof window !== 'undefined' && typeof window.document !== 'undefined'
 
 const isNode = typeof process !== 'undefined' && process.versions != null && process.versions.node != null
 
-/* istanbul ignore next */
 const isWebWorker =
   typeof self === 'object' && self.constructor && self.constructor.name === 'DedicatedWorkerGlobalScope'
 
-/* istanbul ignore next */
 const isJsDom =
   (typeof window !== 'undefined' && window.name === 'nodejs') ||
   (typeof navigator !== 'undefined' &&
     (navigator.userAgent.includes('Node.js') || navigator.userAgent.includes('jsdom')))
 
-/* @ts-ignore */ /* istanbul ignore next  */
+/* c8 ignore next 2 */
+/* @ts-ignore */
 const isDeno = typeof Deno !== 'undefined' && typeof Deno.core !== 'undefined'
 
 export interface PlatformRuntime {

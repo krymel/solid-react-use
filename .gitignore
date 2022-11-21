@@ -7,3 +7,4 @@ coverage
 .cache
 .eslintcache
 yarn-error.log
+.solid
