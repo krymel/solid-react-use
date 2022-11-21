@@ -6,6 +6,7 @@
     "moduleResolution": "Node",
     "jsxImportSource": "solid-js",
     "jsx": "preserve",
+    "emitDeclarationOnly": true,
     "declaration": true,
     "types": [
       "node",

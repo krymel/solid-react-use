@@ -4,12 +4,11 @@
   "publishConfig": {
     "access": "public"
   },
+  "type": "module",
   "source": "src/index.ts",
   "main": "dist/index.js",
-  "exports": "dist/index.modern.js",
-  "module": "dist/index.module.js",
-  "unpkg": "dist/index.umd.js",
-  "description": "",
+  "module": "dist/index.js",
+  "description": "Feels like React, but it's Solid.",
   "keywords": [
     "solid",
     "react-use",
@@ -17,14 +16,14 @@
     "TypeScript"
   ],
   "scripts": {
-    "clean": "npx st-rm-rf dist",
+    "clean": "rm -rf dist",
     "prebuild": "yarn clean && tsc -p tsconfig.dist.json",
     "build": "ts-node-esm build.ts",
     "watch": "microbundle watch",
     "postbuild": "cp package.json .npmignore README.md LICENSE dist",
-    "test": "jest --verbose --coverage",
-    "test:watch": "jest --verbose --watch --coverage",
-    "test:ci": "jest --verbose --runInBand",
+    "test": "NODE_OPTIONS=--experimental-vm-modules npx jest --verbose --coverage",
+    "test:watch": "NODE_OPTIONS=--experimental-vm-modules npx jest --verbose --watch --coverage",
+    "test:ci": "NODE_OPTIONS=--experimental-vm-modules npx jest --verbose --runInBand",
     "prerelease": "yarn build",
     "release": "cd dist && yarn publish",
     "format:fix": "pretty-quick --verbose --pattern 'src/**/*.ts{,x}'",
@@ -40,11 +39,9 @@
   "bugs": {
     "url": "https://github.com/krymel/solid-react-use/issues"
   },
-  "homepage": "https://github.com/krymel/solid-react-use#readme",
   "dependencies": {
     "solid-js": "*",
-    "solid-use": "*",
-    "tabular-filesize-gzip": "^2.0.6"
+    "solid-use": "*"
   },
   "devDependencies": {
     "@jest/globals": "^29.3.1",
@@ -56,6 +53,7 @@
     "pretty-quick": "^3.1.3",
     "ts-jest": "^29.0.3",
     "ts-node": "^10.9.1",
-    "typescript": "^4.9.3"
+    "typescript": "^4.9.3",
+    "tabular-filesize-gzip": "^2.0.6"
   }
 }

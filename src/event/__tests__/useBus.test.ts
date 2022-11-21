@@ -30,7 +30,7 @@ describe('useBus', () => {
       payload: { arbitrary: 'data' },
     })
 
-    expect(onEventReceived.mock.calls.length).toBe(3)
+    expect(onEventReceived).toHaveBeenCalledTimes(3)
   })
 
   it('can emit on a topic and unregister as well', () => {
@@ -52,7 +52,8 @@ describe('useBus', () => {
     })
 
     expect(subscriberId).toBe(1)
-    expect(onEventReceived.mock.calls.length).toBe(0)
+
+    expect(onEventReceived).toHaveBeenCalledTimes(0)
   })
 
   interface MyCounter {
@@ -74,7 +75,7 @@ describe('useBus', () => {
     expect(answer).toBeDefined()
     expect(answer).toEqual(true)
 
-    expect(counterChangedHandler.mock.calls.length).toBe(1)
+    expect(counterChangedHandler).toHaveBeenCalledTimes(1)
 
     expect(subscription).toBeInstanceOf(Object)
     expect(subscription.unsubscribe).toBeInstanceOf(Function)
@@ -92,7 +93,7 @@ describe('useBus', () => {
     useBusEmit<MyCounter>('counterChanged2', { counter: 1 })
     useBusEmit('counterChanged2', { counter: 1 })
 
-    expect(counterChangedHandler.mock.calls.length).toBe(2)
+    expect(counterChangedHandler).toHaveBeenCalledTimes(2)
 
     expect(subscription).toBeInstanceOf(Object)
     expect(subscription.unsubscribe).toBeInstanceOf(Function)
@@ -109,7 +110,7 @@ describe('useBus', () => {
     useBusEmit('counterChanged3', { counter: 1 }) // processed
     useBusEmit('counterChanged3', { counter: 1 }) // unprocessed
 
-    expect(counterChangedHandler.mock.calls.length).toBe(1)
+    expect(counterChangedHandler).toHaveBeenCalledTimes(1)
 
     expect(subscription).toBeInstanceOf(Object)
     expect(subscription.unsubscribe).toBeInstanceOf(Function)
@@ -126,7 +127,7 @@ describe('useBus', () => {
     useBusEmit('counterChanged4', { counter: 1 })
     useBusEmit('counterChanged4', { counter: 1 })
 
-    expect(counterChangedHandler.mock.calls.length).toBe(2)
+    expect(counterChangedHandler).toHaveBeenCalledTimes(2)
 
     expect(subscription).toBeInstanceOf(Object)
     expect(subscription.unsubscribe).toBeInstanceOf(Function)

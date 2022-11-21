@@ -21,7 +21,7 @@ import tabularFilesizeGzip from 'tabular-filesize-gzip'
             files: 'dist/index.js',
           },
           {
-            title: 'SoureMap',
+            title: 'SourceMap',
             files: 'dist/index.js.map',
           },
         ],

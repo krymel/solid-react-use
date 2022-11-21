@@ -1,5 +1,7 @@
 import { usePlatform } from './usePlatform'
+import type { PlatformRuntime } from './usePlatform'
 
+// TODO: rename: useClientOnly
 /**
  * Use a function only on client-side but *never* on server-side (SSR).
  *
@@ -12,7 +14,7 @@ import { usePlatform } from './usePlatform'
  * });
  * ```
  */
-export const useCSROnly = <T>(callback: () => T, platform = usePlatform()): T | void => {
+export const useCSROnly = <T>(callback: () => T, platform: PlatformRuntime = usePlatform()): T | void => {
   if (platform.isBrowser || platform.isWebWorker) {
     return callback()
   }
