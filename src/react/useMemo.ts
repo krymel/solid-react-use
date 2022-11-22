@@ -1,8 +1,9 @@
+import type { Accessor } from 'solid-js'
 import { createMemo } from 'solid-js'
 import { DependencyList } from './reactTypes'
 
 // allow undefined, but don't make it optional as that is very likely a mistake
-type UseMemo = <T>(factory: () => T, deps?: DependencyList | undefined) => T
+type UseMemo = <T>(factory: () => T, deps?: DependencyList) => Accessor<T>
 
 /**
  * [re-solid] Custom implementation using a higher order createEffect and dependency checking.

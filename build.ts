@@ -1,14 +1,25 @@
 import { build } from 'esbuild'
 import tabularFilesizeGzip from 'tabular-filesize-gzip'
 ;(async () => {
-  const result = await build({
+  await build({
     entryPoints: ['./src/index.ts'],
     bundle: true,
     format: 'esm',
     minify: true,
     sourcemap: 'external',
     outfile: './dist/index.js',
-    external: ['solid-js'],
+    external: [
+      'solid-js',
+      'solid-js/web',
+      'solid-js/store',
+      'solid-use',
+      '@solidjs/router',
+      'solid-start-node',
+      'vitest/config',
+      'solid-start/vite',
+      'solid-start/server',
+      'solid-start/session',
+    ],
   })
 
   console.log(

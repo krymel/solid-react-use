@@ -1,18 +1,12 @@
-import solid from 'solid-start/vite'
 import { defineConfig } from 'vitest/config'
+import { useSolidTest } from './src/test/useSolidTest'
+import { useSolidWithPlugins } from './src/solid-start/useSolidWithPlugins'
 
 export default defineConfig({
-  plugins: [solid()],
-  test: {
-    deps: {
-      registerNodeLoader: true,
-    },
+  plugins: [useSolidWithPlugins()],
+  test: useSolidTest({
     coverage: {
       provider: 'c8',
     },
-    environment: 'jsdom',
-    globals: true,
-    setupFiles: ['node_modules/@testing-library/jest-dom/extend-expect'],
-    transformMode: { web: [/\.[jt]sx?$/] },
-  },
+  }),
 })

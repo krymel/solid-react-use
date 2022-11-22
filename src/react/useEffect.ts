@@ -39,7 +39,7 @@ export const useLayoutEffect: UseLayoutEffect = createRenderEffect
 
 /**
  * Insert styles into the DOM.
- * [re-solid] Maps to createEffect, deps are ignored.
+ * [re-solid] Maps to createRenderEffect, deps are ignored.
  * @param effect Imperative function that can return a cleanup function
  * @param deps If present, effect will only activate if the values in the list change.
  *

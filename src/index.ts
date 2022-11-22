@@ -1,7 +1,7 @@
 export * from './solid-use/useAtom'
 
 export * from './platform/useClientOnly'
-export * from './platform/usePlatform'
+export * from './platform/useRuntime'
 export * from './platform/useServerOnly'
 
 export * from './react/useDebugValue'
@@ -10,6 +10,8 @@ export * from './react/useState'
 export * from './react/useEffect'
 export * from './react/useCallback'
 export * from './react/useRef'
+
+export * from './time/useWait'
 
 export * from './react-use/useEffectOnce'
 
@@ -29,3 +31,12 @@ export * from './state/useStateProducer'
 export * from './dom/useDomId'
 
 export * from './event/useBus'
+
+export * from './solid-start/useCookies'
+export * from './solid-start/useSolidWithPlugins'
+
+export * from './test/useSolidTest'
+
+export * from './router'
+
+export * from './format'

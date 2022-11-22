@@ -8,10 +8,12 @@
   "source": "src/index.ts",
   "main": "dist/index.js",
   "module": "dist/index.js",
-  "description": "Feels like React, but it's Solid.",
+  "description": "Feels like React, but it's Solid",
   "keywords": [
     "solid",
     "react-use",
+    "solid-use",
+    "solid-start",
     "hooks",
     "TypeScript"
   ],
@@ -20,9 +22,9 @@
     "prebuild": "yarn clean && tsc -p tsconfig.dist.json",
     "build": "ts-node-esm build.ts",
     "watch": "microbundle watch",
-    "postbuild": "cp package.json .npmignore README.md LICENSE dist",
+    "postbuild": "cp package.dist.json .npmignore README.md LICENSE dist",
+    "pretest": "yarn build",
     "test": "vitest run --coverage",
-    "test:watch": "vitest watch --coverage",
     "test:ci": "vitest run --threads=false",
     "prerelease": "yarn build",
     "release": "cd dist && yarn publish",
@@ -40,9 +42,11 @@
     "url": "https://github.com/krymel/solid-react-use/issues"
   },
   "dependencies": {
-    "babel-preset-solid": "^1.6.2",
-    "solid-js": "^1.6.2",
-    "solid-use": "*"
+    "solid-js": "*",
+    "solid-use": "*",
+    "@solidjs/router": "*",
+    "vitest": "*",
+    "solid-start-node": "*"
   },
   "devDependencies": {
     "@solidjs/testing-library": "^0.5.1",

@@ -1,5 +1,4 @@
 import { createSignal } from 'solid-js'
-import type { SignalOptions } from 'solid-js/types/reactive/signal'
 
 export type SetStateAction<S> = S | ((prevState: S) => S)
 export type GetStateAction<S> = () => S
@@ -15,18 +14,4 @@ export type Dispatch<A> = (value: A) => void
  */
 type UseState = <S = undefined>(value: S) => [GetStateAction<S> | undefined, Dispatch<SetStateAction<S | undefined>>]
 
-export const SymbolUseState = Symbol.for('@@UseState') || '@@UseState'
-
-export const useState: typeof createSignal = <T>(value?: T, options?: SignalOptions<T>) => {
-  const signal = createSignal(value, options)
-
-  // annotate runtime type, but don't break any contract
-  Object.defineProperty(signal, SymbolUseState, {
-    configurable: false,
-    value: true,
-    enumerable: false,
-    writable: false,
-  })
-
-  return signal
-}
+export const useState = createSignal

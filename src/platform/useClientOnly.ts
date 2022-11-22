@@ -1,5 +1,5 @@
-import { usePlatform } from './usePlatform'
-import type { PlatformRuntime } from './usePlatform'
+import { useRuntime } from './useRuntime'
+import type { Runtime } from './useRuntime'
 
 // TODO: rename: useClientOnly
 /**
@@ -14,7 +14,7 @@ import type { PlatformRuntime } from './usePlatform'
  * });
  * ```
  */
-export const useClientOnly = <T>(callback: () => T, platform: PlatformRuntime = usePlatform()): T | void => {
+export const useClientOnly = <T>(callback: () => T, platform: Runtime = useRuntime()): T | void => {
   if (platform.isBrowser || platform.isWebWorker) {
     return callback()
   }

@@ -9,6 +9,7 @@
     "jsxImportSource": "solid-js",
     "jsx": "preserve",
     "types": [
+      "vite/client",
       "node",
       "vitest",
       "@testing-library/jest-dom"

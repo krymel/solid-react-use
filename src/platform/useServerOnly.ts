@@ -1,4 +1,4 @@
-import { PlatformRuntime, usePlatform } from './usePlatform'
+import { Runtime, useRuntime } from './useRuntime'
 
 /**
  * A function that only runs on the server-side / SSR (Node.js, Deno, JsDom).
@@ -12,8 +12,8 @@ import { PlatformRuntime, usePlatform } from './usePlatform'
  * });
  * ```
  */
-export const useServerOnly = <T>(callback: () => T, platform: PlatformRuntime = usePlatform()): T | void => {
-  if (platform.isDeno || platform.isNode || platform.isJsDom) {
+export const useServerOnly = <T>(callback: () => T, platform: Runtime = useRuntime()): T | void => {
+  if (platform.isServer) {
     return callback()
   }
 }

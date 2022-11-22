@@ -9,10 +9,17 @@
     "emitDeclarationOnly": true,
     "declaration": true,
     "types": [
+      "vite/client",
       "node",
       "vitest",
       "@testing-library/jest-dom"
-    ]
+    ],
+    "baseUrl": "./",
+    "paths": {
+      "~/*": [
+        "./src/*"
+      ]
+    }
   },
   "exclude": [
     "node_modules",

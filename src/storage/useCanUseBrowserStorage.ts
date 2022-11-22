@@ -1,4 +1,4 @@
-import { usePlatform } from '../platform/usePlatform'
+import { useRuntime } from '../platform/useRuntime'
 
 /**
  * Tests if localStorage and sessionStorage can be used.
@@ -10,7 +10,7 @@ import { usePlatform } from '../platform/usePlatform'
  * ```
  */
 export const useCanUseBrowserStroage = () => {
-  if (!usePlatform().isBrowser) {
+  if (!useRuntime().isBrowser) {
     return false
   }
 

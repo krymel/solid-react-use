@@ -1,0 +1,36 @@
+{
+  "name": "solid-react-use",
+  "version": "0.0.1",
+  "publishConfig": {
+    "access": "public"
+  },
+  "type": "module",
+  "source": "src/index.ts",
+  "main": "dist/index.js",
+  "module": "dist/index.js",
+  "description": "Feels like React, but it's Solid",
+  "keywords": [
+    "solid",
+    "react-use",
+    "solid-use",
+    "solid-start",
+    "hooks",
+    "TypeScript"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/krymel/solid-react-use.git"
+  },
+  "author": "krymel <krymel@mailbox.org>",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/krymel/solid-react-use/issues"
+  },
+  "peerDependencies": {
+    "solid-js": "*",
+    "solid-use": "*",
+    "@solidjs/router": "*",
+    "vitest": "*",
+    "solid-start-node": "*"
+  }
+}
